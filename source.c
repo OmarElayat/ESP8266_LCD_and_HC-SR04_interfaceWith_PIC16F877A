@@ -30,7 +30,6 @@ int counta = 0;
 int countb = 0;
 int countc = 0;
 
-//****LCD Functions Developed by Circuit Digest.***///
 void Lcd_SetBit(char data_bit) //Based on the Hex value Set the Bits of the Data Lines
 {
 	if(data_bit& 1) 
@@ -202,14 +201,8 @@ void main()
     
     _esp8266_enale_MODE();
     _esp8266_enale_MUX(); //Enable multiple connections
-//    _esp8266_create_server(); //Create a server on port 80
-    //_esp8266_connect_api();
     _esp8266_connect_api();
 
-    
-//    Lcd_Set_Cursor(1,1);
-//    Lcd_Print_String("+1 short sent"); //Print on LCD for debugging
-// 
     
     while(1)
         {
@@ -241,19 +234,19 @@ void main()
         dist_a=distance_a();
         if( dist_a<=20){
                 countc = countc+1;
-                _esp8266_send_api(2); //Establish TCP connection with SMPT2GO
+                _esp8266_send_api(2); 
                 RD1 = 1;
                 RD0 = 1;
             }
         else if(dist_a<=30 & dist_a>20 ){
                 countb = countb+1;
-                _esp8266_send_api(1); //Establish TCP connection with SMPT2GO\
+                _esp8266_send_api(1); 
                 RD1 = 0;
                 RD0 = 1;
             } 
         else if( dist_a<=50 & dist_a>30 ){
                 counta = counta+1;
-                _esp8266_send_api(0); //Establish TCP connection with SMPT2GO
+                _esp8266_send_api(0); 
                 RD1 = 1;
                 RD0 = 0;
             }  
