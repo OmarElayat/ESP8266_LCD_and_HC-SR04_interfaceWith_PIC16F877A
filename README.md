@@ -3,7 +3,7 @@ This project interfaces esp8266 WIFI module and three HC-SR04 ultrasonic sensors
 
 **User Guide:**
 1) Create a new google sheet
-2) Deploy a google Apps script for the generated sheet by copying the attached script. file and modifying the spreadsheet ID with your sheet ID. You can add other modifications to the script. ex: number of columns, date and time format, title of the columns,...etc
+2) Deploy a google Apps script for the generated sheet by copying the attached script. file and modifying the spreadsheet ID with your sheet ID. You can add other modifications to the script.gs ex: number of columns, date and time format, title of the columns,...etc
 3) Using the web app URL generated in 2, Create a scenario on PushingBox, add an action, choose the service to use and eventually write the text to send
 4) Modify esp8266_send_api() function in the header file with your scenario unique identifier i.e. DeviceID or "devid". Use it to run the right scenario.
 
