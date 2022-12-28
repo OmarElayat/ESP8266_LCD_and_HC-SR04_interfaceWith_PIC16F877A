@@ -40,8 +40,7 @@ void esp8266_mode(unsigned char);
 void esp8266_connect(unsigned char*, unsigned char*);
 // Disconnect from AP (AT+CWQAP)
 void esp8266_disconnect(void);
-// Local IP (AT+CIFSR)
-void esp8266_ip(char*);
+
 // Create connection (AT+CIPSTART)
 bit esp8266_start(unsigned char protocol, char* ip, unsigned char port);
 // Send data (AT+CIPSEND)
@@ -58,17 +57,7 @@ inline unsigned char _esp8266_waitResponse(void);
 void Lcd_Set_Cursor(char , char b);
 void Lcd_Print_Char(char);
 void Lcd_Print_String(char *);
-void _esp8266_login_mail(unsigned char*, unsigned char*);
-void _esp8266_mail_sendID(unsigned char*);
-void _esp8266_mail_recID(unsigned char*);
-void _esp8266_mail_subject(unsigned char*);
-void _esp8266_mail_body(unsigned char*);
 //********__________________End of Function Declaration_________________********///
-
-
-
-
-
 
 //***Initialize UART for ESP8266**//
 void Initialize_ESP8266(void)
@@ -154,31 +143,6 @@ unsigned char esp8266_config_softAP(unsigned char* softssid, unsigned char* soft
 //___________End of function______________//
 
 
-
-
-//**Function to stations IP/MAC**//
- void esp8266_get_stationIP()
-    {
-    char rex;
-    ESP8266_send_string("AT+CWLIF\r\n");
-    Lcd_Set_Cursor(1,1);
-    Lcd_Print_String("IP:");
-    do
-    {
-    rex = _esp8266_getch() ;
-    Lcd_Print_Char(rex);
-    }while(rex!=',');
-    Lcd_Set_Cursor(2,1);
-    Lcd_Print_String("MAC:");
-    do
-    {
-    rex = _esp8266_getch() ;
-    Lcd_Print_Char(rex);
-    }while(rex!='O');
-    }
- //___________End of function______________//
- 
-
  
  //**Function to enable multiple connections**//
  void _esp8266_enale_MUX()
@@ -201,42 +165,7 @@ unsigned char esp8266_config_softAP(unsigned char* softssid, unsigned char* soft
     _esp8266_waitResponse(); 
  }
   //___________End of function______________//
- 
- 
- 
- /*Enter into Start typing the mail*/
- void _esp8266_start_mail()
- {
-    _esp8266_print("AT+CIPSEND=4,6\r\n");
-    _esp8266_waitResponse();
-    _esp8266_print("DATA\r\n");
-    _esp8266_waitResponse();
- }
- /*Entered into the typing mode*/
- 
- 
- /*End the Mail using a "."*/
- void _esp8266_End_mail()
- {
-    _esp8266_print("AT+CIPSEND=4,3\r\n");
-    _esp8266_waitResponse();
-    _esp8266_print(".\r\n");
-    _esp8266_waitResponse();
- }
- /*End of mail*/
- 
- /*Quit Connection from SMPT server*/
- void _esp8266_disconnect_SMPT2GO()
- {
-    _esp8266_print("AT+CIPSEND=4,6\r\n");
-    _esp8266_waitResponse();
-    _esp8266_print("QUIT\r\n");
-    _esp8266_waitResponse();
- }
- /*Disconnected*/
- 
- 
- 
+
 
  /*Connect to SMPT2GO server*/
  void _esp8266_connect_api()
@@ -265,142 +194,6 @@ unsigned char esp8266_config_softAP(unsigned char* softssid, unsigned char* soft
  }
          
     /*connected to Server*/
- 
- /*LOG IN with your SMPT2GO approved mail ID*/
-    /*Visit the page https://www.smtp2go.com/ and sign up using any Gmail ID
-     * Once you gmail ID is SMPT2GO approved convert your mail ID and password in 64 base format
-     * visit https://www.base64encode.org/ for converting 64 base format online
-     * FORMAT -> _esp8266_login_mail("mailID in base 64","Password in base 64");
-     * This program uses the ID-> aswinthcd@gmail.com and password -> circuitdigest as an example
-     */
- void _esp8266_login_mail(unsigned char* mail_ID, unsigned char* mail_Pas) {
-     len = strlen(mail_ID);
-     len+= 2;
-     char l2 = len%10;
-     char l1 = (len/10)%10;
-     
-     _esp8266_print("AT+CIPSEND=4,");
-     if ((l1+'0')>'0')
-     _esp8266_putch(l1+'0');
-     _esp8266_putch(l2+'0');
-    _esp8266_print("\r\n");
-    _esp8266_waitResponse();
-    
-    _esp8266_print(mail_ID);
-    _esp8266_print("\r\n");
-    _esp8266_waitResponse();
-    
-    len = strlen(mail_Pas);
-    len+= 2;
-    char l2 = len%10;
-    char l1 = (len/10)%10;
-     
-    _esp8266_print("AT+CIPSEND=4,");
-    if ((l1+'0')>'0')
-    _esp8266_putch(l1+'0');
-    _esp8266_putch(l2+'0');
-    _esp8266_print("\r\n");
-    _esp8266_waitResponse();
-    
-    
-   _esp8266_print(mail_Pas);
-    _esp8266_print("\r\n");
-    _esp8266_waitResponse();
-}
- /*End of Login*/
- 
- 
- void _esp8266_mail_sendID(unsigned char* send_ID)
- {
-     len = strlen(send_ID);
-     len+= 14;
-     char l2 = len%10;
-     char l1 = (len/10)%10;
-     
-     _esp8266_print("AT+CIPSEND=4,");
-     if ((l1+'0')>'0')
-     _esp8266_putch(l1+'0');
-     _esp8266_putch(l2+'0');
-    _esp8266_print("\r\n");
-    _esp8266_waitResponse();
-    
-    _esp8266_print("MAIL FROM:<");
-    _esp8266_print(send_ID);
-    _esp8266_print(">\r\n");
-    _esp8266_waitResponse();   
- } 
- 
- 
-  void _esp8266_mail_recID(unsigned char* rec_ID)
- {
-     len = strlen(rec_ID);
-     len+= 12;
-     char l2 = len%10;
-     char l1 = (len/10)%10;
-     
-     _esp8266_print("AT+CIPSEND=4,");
-     if ((l1+'0')>'0')
-     _esp8266_putch(l1+'0');
-     _esp8266_putch(l2+'0');
-    _esp8266_print("\r\n");
-    _esp8266_waitResponse();
-    
-    _esp8266_print("RCPT To:<");
-    _esp8266_print(rec_ID);
-    _esp8266_print(">\r\n");
-    _esp8266_waitResponse();   
- } 
-  
-    void _esp8266_mail_subject(unsigned char* subject)
- {
-     len = strlen(subject);
-     len+= 10;
-     char l2 = len%10;
-     char l1 = (len/10)%10;
-     
-     _esp8266_print("AT+CIPSEND=4,");
-     if ((l1+'0')>'0')
-     _esp8266_putch(l1+'0');
-     _esp8266_putch(l2+'0');
-    _esp8266_print("\r\n");
-    _esp8266_waitResponse();
-    
-    _esp8266_print("Subject:");
-    _esp8266_print(subject);
-    _esp8266_print("\r\n");
-    _esp8266_waitResponse();   
- } 
-    
-    
-    
-        void _esp8266_mail_body(unsigned char* body)
- {
-     len = strlen(body);
-     len+= 2;
-     char l2 = len%10;
-     char l1 = (len/10)%10;
-     
-     _esp8266_print("AT+CIPSEND=4,");
-     if ((l1+'0')>'0')
-     _esp8266_putch(l1+'0');
-     _esp8266_putch(l2+'0');
-    _esp8266_print("\r\n");
-    _esp8266_waitResponse();
-    
-    _esp8266_print(body);
-    _esp8266_print("\r\n");
-    _esp8266_waitResponse();   
- } 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
 /**
  * Check if the module is started
  *
@@ -450,16 +243,6 @@ void esp8266_echoCmds(bool echo) {
     _esp8266_waitFor("OK");
 }
 
-/**
- * Set the WiFi mode.
- *
- * ESP8266_STATION : Station mode
- * ESP8266_SOFTAP : Access point mode
- *
- * This sends the AT+CWMODE command to the ESP module.
- *
- * @param mode an ORed bitmask of ESP8266_STATION and ESP8266_SOFTAP
- */
 void esp8266_mode(unsigned char mode) {
     _esp8266_print("AT+CWMODE=");
     _esp8266_putch(mode + '0');
@@ -495,33 +278,6 @@ void esp8266_disconnect(void) {
     _esp8266_waitFor("OK");
 }
 
-/**
- * Store the current local IPv4 address.
- *
- * This sends the AT+CIFSR command to the ESP module.
- *
- * The result will not be stored as a string but byte by byte. For example, for
- * the IP 192.168.0.1, the value of store_in will be: {0xc0, 0xa8, 0x00, 0x01}.
- *
- * @param store_in a pointer to an array of the type unsigned char[4]; this
- * array will be filled with the local IP.
- */
-void esp8266_ip(unsigned char* store_in) {
-    _esp8266_print("AT+CIFSR\r\n");
-    unsigned char received;
-    do {
-        received = _esp8266_getch();
-    } while (received < '0' || received > '9');
-    for (unsigned char i = 0; i < 4; i++) {
-        store_in[i] = 0;
-        do {
-            store_in[i] = 10 * store_in[i] + received - '0';
-            received = _esp8266_getch();
-        } while (received >= '0' && received <= '9');
-        received = _esp8266_getch();
-    }
-    _esp8266_waitFor("OK");
-}
 
 /**
  * Open a TCP or UDP connection.
@@ -706,4 +462,3 @@ inline unsigned char _esp8266_waitResponse(void) {
 }
 
 #endif
-
