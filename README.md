@@ -15,6 +15,6 @@ _esp8266_print("GET /pushingbox?devid=vD37CDB3DB961DB1&short=0&mid=1&long=0 HTTP
   * This line sends 1 in mid column and 0 in short and long columns to the scenario "vD37CDB3DB961DB1"
   * In my scenario im sending 122 bytes/request. you will need to recalculate this for your scenario as well
 
-**Disclosure: The header file of the project was built on the Aswinth-raj/PIC_ESP8266-Sending-mail project header file**
+**Note: The header file of the project was built on the Aswinth-raj/PIC_ESP8266-Sending-mail project header file**
 
 P.S. You can find multilple tutorials that walk you through steps 2 and 3 online if needed.
