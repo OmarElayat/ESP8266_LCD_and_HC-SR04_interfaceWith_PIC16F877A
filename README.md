@@ -16,12 +16,13 @@ _esp8266_print("GET /pushingbox?devid=vD37CDB3DB961DB1&short=0&mid=1&long=0 HTTP
   * In my scenario im sending 122 bytes/request. you will need to recalculate this for your scenario as well
 
 **Reference:**
-
+```
 @misc{github,
   author={Aswinth-raj},
   title={PIC_ESP8266-Sending-mail},
   year={2017},
   url={https://github.com/Aswinth-raj/PIC_ESP8266-Sending-mail},
 }
+```
 
 P.S. You can find multilple tutorials that walk you through steps 2 and 3 online if needed.
